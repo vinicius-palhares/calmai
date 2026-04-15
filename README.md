@@ -8,11 +8,7 @@
 
 ## 🎬 Vídeo Pitch
 
-▶ **[ASSISTIR (link a inserir após gravação)](https://www.loom.com/share/SUBSTITUIR-PELO-LINK)**
-
-> Substitua o link acima pelo URL do Loom/YouTube/Drive após gravar o vídeo seguindo o roteiro em [`docs/04-roteiro-video-pitch.md`](docs/04-roteiro-video-pitch.md).
-
----
+▶ **[ASSISTIR](https://www.loom.com/share/41fb84eed4c24a7781c3903eaff8b948)**
 
 ## 1. Problema
 
@@ -210,27 +206,6 @@ trabalho-mev-validacao/
 └── canvas/
     └── lean-canvas.html               ← Versão visual exportável em PDF (Ctrl+P)
 ```
-
----
-
-## ✅ Cobertura dos entregáveis (7,0 pontos)
-
-| Sub-item exigido pelo PDF | Local de entrega | Pontos |
-|---|---|---|
-| 1.1 Problema/Oportunidade | `docs/01-parte-teorica.md` §1 | 1,5 |
-| 1.2 Ideação com IA | `docs/01-parte-teorica.md` §2 + `docs/05-ideacao-com-ia.md` | (incluso) |
-| 1.3 Hipóteses do Produto | `docs/01-parte-teorica.md` §3 | (incluso) |
-| 1.4 Proposta de MVP | `docs/01-parte-teorica.md` §4 | (incluso) |
-| 1.5 Estratégia de Validação | `docs/01-parte-teorica.md` §5 | (incluso) |
-| 2.1 Canvas | `docs/02-lean-canvas.md` + `canvas/lean-canvas.html` | 3,5 |
-| 2.2 Protótipo | `prototipo/index.html` | (incluso) |
-| 2.3 Experimento | Typeform + `docs/03-experimento-validacao.md` Parte 1 | (incluso) |
-| 2.4 Resultados | `docs/03-experimento-validacao.md` Parte 2 | (incluso) |
-| 2.5 README | este arquivo | (incluso) |
-| 3 Vídeo Pitch (até 4 min) | Link no topo deste README | 2,0 |
-| **TOTAL** | | **7,0** |
-
----
 
 ## 🔗 Referências e Fontes
 

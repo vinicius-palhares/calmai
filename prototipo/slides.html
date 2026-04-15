@@ -995,7 +995,7 @@
   <section class="slide s-cover active">
     <div class="logo">◐</div>
     <h1 class="serif">CalmAI</h1>
-    <div class="subtitle serif italic">Da ideia ao produto validado em 5 dias</div>
+    <div class="subtitle serif italic">Entenda seu emocional como você entende sua agenda</div>
     <div class="meta">Vinícius Casé Palhares · UniFECAF · Metodologias Ágeis e Validação de Produtos</div>
   </section>
 
@@ -1035,33 +1035,12 @@
     <div class="text">
       <h2>CalmAI</h2>
       <div class="tagline">"Entenda seu emocional como você entende sua agenda."</div>
-      <div class="meta">PT-BR nativo · privado · menos de <strong>R$ 0,33</strong> por dia</div>
     </div>
-  </section>
-
-  <!-- ======================= SLIDE 05 — IA CO-PILOTO ======================= -->
-  <section class="slide s-ai">
-    <span class="eyebrow">Ideação</span>
-    <div class="grid">
-      <div class="card c1">
-        <h3>Claude</h3>
-        <div class="verb">brainstorm divergente</div>
-      </div>
-      <div class="card c2">
-        <h3>ChatGPT</h3>
-        <div class="verb">mapeamento de concorrentes</div>
-      </div>
-      <div class="card c3">
-        <h3>Gemini</h3>
-        <div class="verb">dados oficiais de saúde</div>
-      </div>
-    </div>
-    <div class="anchor">co-piloto, não autopiloto</div>
   </section>
 
   <!-- ======================= SLIDE 06 — O QUE FOI CONSTRUÍDO ======================= -->
   <section class="slide s-built">
-    <h2 class="serif">O que foi construído em 5 dias</h2>
+    <h2 class="serif">O que foi construído:</h2>
     <div class="grid">
       <div class="tile">
         <span class="num">01</span>
@@ -1296,11 +1275,28 @@
     totalEl.textContent = slides.length;
     let idx = 0;
 
-    function show(i) {
+    // Sync com roteiro.html (teleprompter em segunda tela)
+    let roteiroChannel = null;
+    try { roteiroChannel = new BroadcastChannel('calmai-pitch'); } catch (e) { }
+    if (roteiroChannel) {
+      roteiroChannel.addEventListener('message', (ev) => {
+        if (ev.data && ev.data.type === 'slide' && ev.data.from === 'roteiro') {
+          const n = ev.data.n;
+          if (n >= 1 && n <= slides.length && n - 1 !== idx) show(n - 1, false);
+        }
+      });
+    }
+
+    function show(i, broadcast = true) {
       idx = Math.max(0, Math.min(slides.length - 1, i));
       slides.forEach((s, k) => s.classList.toggle('active', k === idx));
       curEl.textContent = idx + 1;
       try { history.replaceState(null, '', '#' + (idx + 1)); } catch (e) { }
+      // fallback cross-window (quando BroadcastChannel não está disponível)
+      try { localStorage.setItem('calmai-slide', String(idx + 1)); } catch (e) { }
+      if (broadcast && roteiroChannel) {
+        try { roteiroChannel.postMessage({ type: 'slide', n: idx + 1, from: 'slides' }); } catch (e) { }
+      }
     }
 
     document.addEventListener('keydown', (e) => {
