@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CalmAI — Pitch · 13 slides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FBF8F4;
+      --bg-soft: #F4EFE7;
+      --ink: #1F2233;
+      --ink-soft: #5C6378;
+      --ink-mute: #8C92A3;
+      --line: #E8E1D4;
+      --accent: #C4754E;
+      --accent-soft: #F2D9C8;
+      --accent-deep: #8E4F32;
+      --calm-1: #A8DDB5;
+      --calm-2: #C8E6FF;
+      --warn-1: #FFD89C;
+      --warn-2: #FFB199;
+      --purple: #D9C8F5;
+      --ok: #3B8A4C;
+      --fail: #B43A2E;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0C0E18;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ============================================================
+     SLIDE CONTAINER
+  ============================================================ */
+    .slide {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 6vmin;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    .slide.active {
+      display: flex;
+      animation: fade .35s ease;
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* ============================================================
+     TYPOGRAPHY ATOMS
+  ============================================================ */
+    .serif {
+      font-family: 'Fraunces', serif;
+    }
+
+    .italic {
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .accent {
+      color: var(--accent-deep);
+    }
+
+    .mute {
+      color: var(--ink-mute);
+    }
+
+    .soft {
+      color: var(--ink-soft);
+    }
+
+    /* ============================================================
+     COMMON ELEMENTS
+  ============================================================ */
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      font-size: 1.7vmin;
+      font-weight: 600;
+      color: var(--accent-deep);
+      margin-bottom: 3vmin;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 3vmin;
+      left: 0;
+      right: 0;
+      font-size: 1.6vmin;
+      color: var(--ink-mute);
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+
+    .source {
+      font-size: 1.8vmin;
+      color: var(--ink-mute);
+      letter-spacing: 0.05em;
+      margin-top: 3vmin;
+    }
+
+    /* ============================================================
+     SLIDE 1 — CAPA
+  ============================================================ */
+    .s-cover .logo {
+      width: 12vmin;
+      height: 12vmin;
+      background: var(--accent);
+      border-radius: 2.5vmin;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6.5vmin;
+      color: white;
+      margin-bottom: 5vmin;
+      transform: rotate(12deg);
+    }
+
+    .s-cover h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 11vmin;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 2vmin;
+    }
+
+    .s-cover .subtitle {
+      font-size: 3vmin;
+      color: var(--ink-soft);
+      font-weight: 400;
+      max-width: 80vmin;
+    }
+
+    .s-cover .meta {
+      font-size: 1.8vmin;
+      color: var(--ink-mute);
+      margin-top: 5vmin;
+      letter-spacing: 0.08em;
+    }
+
+    /* ============================================================
+     SLIDE 2 — STATS (MERGED 2+3)
+  ============================================================ */
+    .s-stats .top {
+      font-family: 'Fraunces', serif;
+      font-size: 4.5vmin;
+      font-weight: 500;
+      max-width: 80vmin;
+      margin-bottom: 3vmin;
+      line-height: 1.25;
+    }
+
+    .s-stats .big {
+      font-family: 'Fraunces', serif;
+      font-size: 30vmin;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin: 1vmin 0;
+    }
+
+    .s-stats .bottom {
+      font-size: 3vmin;
+      color: var(--ink-soft);
+      max-width: 75vmin;
+      line-height: 1.3;
+      margin-top: 2vmin;
+    }
+
+    /* ============================================================
+     SLIDE 3 — FRASE ÂNCORA (Sentem...)
+  ============================================================ */
+    .s-quote .q {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 8vmin;
+      max-width: 85vmin;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .s-quote .q::before {
+      content: "\201C";
+      color: var(--accent);
+      margin-right: 0.1em;
+    }
+
+    .s-quote .q::after {
+      content: "\201D";
+      color: var(--accent);
+      margin-left: 0.1em;
+    }
+
+    /* ============================================================
+     SLIDE 4 — SOLUÇÃO
+  ============================================================ */
+    .s-solution {
+      flex-direction: row;
+      gap: 8vmin;
+      justify-content: center;
+    }
+
+    .s-solution .chart-card {
+      background: var(--bg-soft);
+      padding: 4vmin;
+      border-radius: 3vmin;
+      width: 42vmin;
+    }
+
+    .s-solution .chart-lbl {
+      font-size: 1.6vmin;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-mute);
+      font-weight: 600;
+      margin-bottom: 2.5vmin;
+    }
+
+    .s-solution .chart-bars {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1vmin;
+      align-items: end;
+      height: 18vmin;
+      margin-bottom: 1vmin;
+    }
+
+    .s-solution .bar {
+      border-radius: 0.6vmin 0.6vmin 0.15vmin 0.15vmin;
+      min-height: 0.5vmin;
+    }
+
+    .s-solution .chart-axis {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1vmin;
+      font-size: 1.5vmin;
+      color: var(--ink-mute);
+      text-align: center;
+    }
+
+    .s-solution .insight {
+      margin-top: 3vmin;
+      padding: 2.5vmin 2.5vmin;
+      background: linear-gradient(135deg, var(--accent-soft), #FFE4D1);
+      border-radius: 2vmin;
+      font-size: 1.8vmin;
+      line-height: 1.4;
+      text-align: left;
+    }
+
+    .s-solution .text {
+      text-align: left;
+      max-width: 50vmin;
+    }
+
+    .s-solution .text h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 10vmin;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 2vmin;
+      line-height: 1;
+    }
+
+    .s-solution .text .tagline {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 3.2vmin;
+      color: var(--accent-deep);
+      line-height: 1.3;
+      margin-bottom: 3vmin;
+    }
+
+    .s-solution .text .meta {
+      font-size: 2.2vmin;
+      color: var(--ink-soft);
+      letter-spacing: 0.03em;
+    }
+
+    /* ============================================================
+     SLIDE 5 — IA CO-PILOTO
+  ============================================================ */
+    .s-ai .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4vmin;
+      max-width: 90vmin;
+      margin-bottom: 5vmin;
+    }
+
+    .s-ai .card {
+      background: var(--bg-soft);
+      padding: 5vmin 3vmin;
+      border-radius: 2.5vmin;
+      text-align: center;
+    }
+
+    .s-ai .card h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 4.5vmin;
+      font-weight: 600;
+      margin-bottom: 1vmin;
+      color: var(--ink);
+    }
+
+    .s-ai .card .verb {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 2.5vmin;
+      color: var(--accent-deep);
+    }
+
+    .s-ai .c1 h3 {
+      color: #c46a3e;
+    }
+
+    .s-ai .c2 h3 {
+      color: #3a8a5e;
+    }
+
+    .s-ai .c3 h3 {
+      color: #3563b8;
+    }
+
+    .s-ai .anchor {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 3vmin;
+      color: var(--ink-soft);
+    }
+
+    /* ============================================================
+     SLIDE 6 — O QUE FOI CONSTRUÍDO
+  ============================================================ */
+    .s-built h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 5vmin;
+      font-weight: 500;
+      margin-bottom: 5vmin;
+      color: var(--ink);
+    }
+
+    .s-built .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3.5vmin;
+      max-width: 95vmin;
+    }
+
+    .s-built .tile {
+      background: #fff;
+      border: 1px solid var(--line);
+      padding: 5vmin 3vmin;
+      border-radius: 2.5vmin;
+      box-shadow: 0 2vmin 5vmin rgba(31, 34, 51, 0.06);
+    }
+
+    .s-built .tile .num {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 1.5vmin;
+      padding: 0.5vmin 1.5vmin;
+      border-radius: 0.8vmin;
+      letter-spacing: 0.15em;
+      font-weight: 700;
+      margin-bottom: 2.5vmin;
+    }
+
+    .s-built .tile h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 3.5vmin;
+      font-weight: 600;
+      margin-bottom: 1vmin;
+    }
+
+    .s-built .tile p {
+      font-size: 2vmin;
+      color: var(--ink-soft);
+      line-height: 1.35;
+    }
+
+    .s-built .tile code {
+      display: block;
+      margin-top: 2vmin;
+      font-size: 1.6vmin;
+      color: var(--ink-mute);
+      font-family: monospace;
+    }
+
+    /* ============================================================
+     SLIDE 7 — LEAN CANVAS (espelha canvas/lean-canvas.html)
+  ============================================================ */
+    .s-canvas {
+      padding: 3vmin 3vmin 2vmin;
+      background: #f5f7fa;
+      justify-content: flex-start;
+    }
+
+    .s-canvas .hdr {
+      width: 100%;
+      max-width: 140vmin;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1.6vmin;
+    }
+
+    .s-canvas .hdr h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 3.4vmin;
+      font-weight: 600;
+      color: #2d3a8c;
+      letter-spacing: -0.02em;
+    }
+
+    .s-canvas .hdr h2 span {
+      color: #6b7fd9;
+      font-weight: 400;
+    }
+
+    .s-canvas .hdr .meta {
+      font-size: 1.55vmin;
+      color: #5a6478;
+      text-align: right;
+      line-height: 1.4;
+    }
+
+    .s-canvas .canvas {
+      width: 100%;
+      max-width: 140vmin;
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      grid-template-rows: 1.05fr 1.05fr 0.9fr;
+      gap: 0.4vmin;
+      background: #2d3a8c;
+      border: 0.4vmin solid #2d3a8c;
+      border-radius: 1vmin;
+      overflow: hidden;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .s-canvas .block {
+      background: #fff;
+      padding: 1.3vmin 1.5vmin;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      overflow: hidden;
+    }
+
+    .s-canvas .block h3 {
+      font-size: 1.35vmin;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #2d3a8c;
+      border-bottom: 0.2vmin solid #e0e5f0;
+      padding-bottom: 0.6vmin;
+      margin-bottom: 1vmin;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.7vmin;
+    }
+
+    .s-canvas .block .num {
+      background: #2d3a8c;
+      color: #fff;
+      width: 2vmin;
+      height: 2vmin;
+      border-radius: 0.4vmin;
+      font-size: 1.25vmin;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .s-canvas .block ul {
+      list-style: none;
+      font-size: 1.4vmin;
+      line-height: 1.4;
+      color: #2a3548;
+    }
+
+    .s-canvas .block ul li {
+      margin-bottom: 0.6vmin;
+      padding-left: 1.2vmin;
+      position: relative;
+    }
+
+    .s-canvas .block ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #6b7fd9;
+      font-weight: bold;
+    }
+
+    .s-canvas .block .highlight {
+      background: #f0f4ff;
+      padding: 0.8vmin 1vmin;
+      border-radius: 0.4vmin;
+      border-left: 0.3vmin solid #6b7fd9;
+      font-size: 1.3vmin;
+      font-style: italic;
+      color: #2d3a8c;
+      margin-top: 0.7vmin;
+      line-height: 1.35;
+    }
+
+    .s-canvas .block p {
+      font-size: 1.4vmin;
+      line-height: 1.4;
+      color: #2a3548;
+    }
+
+    .s-canvas .b-problema {
+      grid-column: 1 / 3;
+      grid-row: 1 / 3;
+    }
+
+    .s-canvas .b-solucao {
+      grid-column: 3 / 5;
+      grid-row: 1 / 2;
+    }
+
+    .s-canvas .b-proposta {
+      grid-column: 5 / 7;
+      grid-row: 1 / 3;
+      background: #faf8ff;
+    }
+
+    .s-canvas .b-vantagem {
+      grid-column: 7 / 9;
+      grid-row: 1 / 2;
+    }
+
+    .s-canvas .b-segmentos {
+      grid-column: 9 / 11;
+      grid-row: 1 / 3;
+      background: #f5fff8;
+    }
+
+    .s-canvas .b-metricas {
+      grid-column: 3 / 5;
+      grid-row: 2 / 3;
+    }
+
+    .s-canvas .b-canais {
+      grid-column: 7 / 9;
+      grid-row: 2 / 3;
+    }
+
+    .s-canvas .b-custos {
+      grid-column: 1 / 6;
+      grid-row: 3 / 4;
+      background: #fff8f0;
+    }
+
+    .s-canvas .b-receitas {
+      grid-column: 6 / 11;
+      grid-row: 3 / 4;
+      background: #f0fff5;
+    }
+
+    /* ============================================================
+     SLIDE 8 — A AMOSTRA
+  ============================================================ */
+    .s-sample .big {
+      font-family: 'Fraunces', serif;
+      font-size: 55vmin;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 0.85;
+      letter-spacing: -0.04em;
+    }
+
+    .s-sample .lbl {
+      font-family: 'Fraunces', serif;
+      font-size: 4.5vmin;
+      font-weight: 500;
+      margin-top: 2vmin;
+    }
+
+    .s-sample .sub {
+      font-size: 2.5vmin;
+      color: var(--ink-soft);
+      margin-top: 1.5vmin;
+    }
+
+    .s-sample .caveat {
+      font-size: 1.8vmin;
+      color: var(--ink-mute);
+      font-style: italic;
+      margin-top: 4vmin;
+      letter-spacing: 0.03em;
+    }
+
+    /* ============================================================
+     SLIDE 9 — 3 RESULTADOS
+  ============================================================ */
+    .s-results h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 4.5vmin;
+      font-weight: 500;
+      color: var(--ink-soft);
+      margin-bottom: 5vmin;
+    }
+
+    .s-results .row {
+      display: grid;
+      grid-template-columns: 6vmin 28vmin 1fr;
+      gap: 3.5vmin;
+      align-items: baseline;
+      margin-bottom: 3vmin;
+      max-width: 90vmin;
+      width: 100%;
+    }
+
+    .s-results .icon {
+      font-size: 5vmin;
+      text-align: center;
+    }
+
+    .s-results .icon.ok {
+      color: var(--ok);
+    }
+
+    .s-results .icon.fail {
+      color: var(--fail);
+    }
+
+    .s-results .pct {
+      font-family: 'Fraunces', serif;
+      font-size: 10.5vmin;
+      font-weight: 600;
+      line-height: 1;
+      text-align: right;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .s-results .pct.ok {
+      color: var(--ok);
+    }
+
+    .s-results .pct.fail {
+      color: var(--fail);
+    }
+
+    .s-results .desc {
+      font-size: 3.2vmin;
+      color: var(--ink);
+      text-align: left;
+      font-weight: 500;
+    }
+
+    .s-results .desc small {
+      display: block;
+      font-size: 1.8vmin;
+      color: var(--ink-mute);
+      font-weight: 400;
+      margin-top: 0.3vmin;
+    }
+
+    /* ============================================================
+     SLIDE 10 — 80% CHATGPT
+  ============================================================ */
+    .s-revelation .big {
+      font-family: 'Fraunces', serif;
+      font-size: 40vmin;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+    }
+
+    .s-revelation .lbl {
+      font-family: 'Fraunces', serif;
+      font-size: 5.5vmin;
+      font-weight: 500;
+      margin-top: 3vmin;
+      line-height: 1.15;
+      max-width: 80vmin;
+    }
+
+    .s-revelation .aside {
+      font-size: 2.2vmin;
+      color: var(--ink-mute);
+      font-style: italic;
+      margin-top: 4vmin;
+      max-width: 70vmin;
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================================
+     SLIDE 11 — FEATURE ERRADA
+  ============================================================ */
+    .s-wrong .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      max-width: 95vmin;
+      align-items: stretch;
+    }
+
+    .s-wrong .col {
+      padding: 4vmin 5vmin;
+      text-align: left;
+    }
+
+    .s-wrong .col.left {
+      border-right: 1px dashed var(--accent);
+    }
+
+    .s-wrong .col .lbl {
+      font-size: 2vmin;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--ink-mute);
+      font-weight: 600;
+      margin-bottom: 2vmin;
+    }
+
+    .s-wrong .col .what {
+      font-family: 'Fraunces', serif;
+      font-size: 4.8vmin;
+      font-weight: 500;
+      line-height: 1.1;
+      margin-bottom: 3vmin;
+      color: var(--ink);
+    }
+
+    .s-wrong .col .pct {
+      font-family: 'Fraunces', serif;
+      font-size: 13vmin;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .s-wrong .col.left .pct {
+      color: var(--fail);
+    }
+
+    .s-wrong .col.right .pct {
+      color: var(--ok);
+    }
+
+    .s-wrong .closer {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 3.5vmin;
+      color: var(--ink-soft);
+      margin-top: 5vmin;
+    }
+
+    /* ============================================================
+     SLIDE 12 — DECISÃO
+  ============================================================ */
+    .s-decision h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 6vmin;
+      font-weight: 600;
+      margin-bottom: 5vmin;
+      letter-spacing: -0.01em;
+    }
+
+    .s-decision h2 strong {
+      color: var(--accent-deep);
+    }
+
+    .s-decision .changes {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5vmin;
+      max-width: 90vmin;
+      width: 100%;
+    }
+
+    .s-decision .change {
+      display: grid;
+      grid-template-columns: 14vmin 1fr auto 1fr;
+      gap: 2.5vmin;
+      align-items: center;
+      padding: 2vmin 3vmin;
+      background: var(--bg-soft);
+      border-radius: 2vmin;
+      text-align: left;
+    }
+
+    .s-decision .change .cat {
+      font-size: 1.7vmin;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 700;
+      color: var(--accent-deep);
+    }
+
+    .s-decision .change .before {
+      font-family: 'Fraunces', serif;
+      font-size: 2.6vmin;
+      color: var(--ink-mute);
+      text-decoration: line-through;
+    }
+
+    .s-decision .change .arrow {
+      color: var(--accent);
+      font-size: 3vmin;
+      font-weight: 700;
+    }
+
+    .s-decision .change .after {
+      font-family: 'Fraunces', serif;
+      font-size: 2.8vmin;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    /* ============================================================
+     SLIDE 13 — FECHAMENTO
+  ============================================================ */
+    .s-close .final {
+      font-family: 'Fraunces', serif;
+      font-size: 7.5vmin;
+      font-weight: 500;
+      max-width: 90vmin;
+      line-height: 1.15;
+      margin-bottom: 4vmin;
+      letter-spacing: -0.01em;
+    }
+
+    .s-close .final strong {
+      font-weight: 700;
+      color: var(--accent-deep);
+    }
+
+    .s-close .divider {
+      width: 10vmin;
+      height: 0.35vmin;
+      background: var(--accent);
+      border-radius: 0.3vmin;
+      margin-bottom: 4vmin;
+      opacity: 0.8;
+    }
+
+    .s-close .thanks {
+      font-family: 'Fraunces', serif;
+      font-size: 5vmin;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 2vmin;
+    }
+
+    .s-close .repo {
+      font-size: 2vmin;
+      color: var(--ink-soft);
+      letter-spacing: 0.04em;
+      line-height: 1.6;
+    }
+
+    .s-close .repo code {
+      background: var(--bg-soft);
+      padding: 0.6vmin 1.5vmin;
+      border-radius: 0.8vmin;
+      font-family: monospace;
+      font-size: 1.7vmin;
+      color: var(--ink);
+      margin-top: 0.8vmin;
+      display: inline-block;
+    }
+
+    /* ============================================================
+     TOOLBAR
+  ============================================================ */
+    .toolbar {
+      position: fixed;
+      bottom: 1.8vmin;
+      right: 2.4vmin;
+      display: flex;
+      gap: 1.5vmin;
+      align-items: center;
+      font-size: 1.4vmin;
+      color: var(--ink-mute);
+      letter-spacing: 0.05em;
+      background: rgba(251, 248, 244, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 0.8vmin 1.8vmin;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      z-index: 100;
+      user-select: none;
+    }
+
+    .toolbar .counter {
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .toolbar .sep {
+      color: var(--line);
+    }
+
+    .toolbar .hint {
+      font-size: 1.3vmin;
+    }
+
+    /* ============================================================
+     PRINT (PDF export)
+  ============================================================ */
+    @media print {
+      @page {
+        size: 1920px 1080px landscape;
+        margin: 0;
+      }
+
+      html,
+      body {
+        background: white;
+        overflow: visible;
+        height: auto;
+      }
+
+      .slide {
+        display: flex !important;
+        position: relative;
+        page-break-after: always;
+        break-after: page;
+        width: 1920px;
+        height: 1080px;
+        animation: none;
+      }
+
+      .slide:last-child {
+        page-break-after: auto;
+      }
+
+      .toolbar {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ======================= SLIDE 01 — CAPA ======================= -->
+  <section class="slide s-cover active">
+    <div class="logo">◐</div>
+    <h1 class="serif">CalmAI</h1>
+    <div class="subtitle serif italic">Da ideia ao produto validado em 5 dias</div>
+    <div class="meta">Vinícius Casé Palhares · UniFECAF · Metodologias Ágeis e Validação de Produtos</div>
+  </section>
+
+  <!-- ======================= SLIDE 02 — STATS (merged 2+3) ======================= -->
+  <section class="slide s-stats">
+    <span class="eyebrow">O problema</span>
+    <div class="top">Brasil já era o país mais ansioso do mundo.</div>
+    <div class="big">+25%</div>
+    <div class="bottom">de ansiedade entre jovens de <strong>18 a 29 anos</strong> pós-pandemia.</div>
+    <div class="source">OMS, 2024 · FioCruz, 2023</div>
+  </section>
+
+  <!-- ======================= SLIDE 03 — FRASE ÂNCORA ======================= -->
+  <section class="slide s-quote">
+    <div class="q serif italic">Sentem, mas não enxergam o padrão.</div>
+  </section>
+
+  <!-- ======================= SLIDE 04 — SOLUÇÃO ======================= -->
+  <section class="slide s-solution">
+    <div class="chart-card">
+      <div class="chart-lbl">sua semana</div>
+      <div class="chart-bars">
+        <span class="bar" style="height:30%; background:var(--warn-2)"></span>
+        <span class="bar" style="height:55%; background:var(--warn-2)"></span>
+        <span class="bar" style="height:70%; background:var(--warn-2)"></span>
+        <span class="bar" style="height:45%; background:var(--warn-1)"></span>
+        <span class="bar" style="height:35%; background:var(--calm-1)"></span>
+        <span class="bar" style="height:25%; background:var(--calm-1)"></span>
+        <span class="bar" style="height:20%; background:var(--calm-1)"></span>
+      </div>
+      <div class="chart-axis">
+        <span>qua</span><span>qui</span><span>sex</span><span>sáb</span><span>dom</span><span>seg</span><span>ter</span>
+      </div>
+      <div class="insight"><strong>Sua ansiedade apareceu principalmente nas manhãs de sex-feira.</strong> Os finais de
+        semana te acalmaram.</div>
+    </div>
+    <div class="text">
+      <h2>CalmAI</h2>
+      <div class="tagline">"Entenda seu emocional como você entende sua agenda."</div>
+      <div class="meta">PT-BR nativo · privado · menos de <strong>R$ 0,33</strong> por dia</div>
+    </div>
+  </section>
+
+  <!-- ======================= SLIDE 05 — IA CO-PILOTO ======================= -->
+  <section class="slide s-ai">
+    <span class="eyebrow">Ideação</span>
+    <div class="grid">
+      <div class="card c1">
+        <h3>Claude</h3>
+        <div class="verb">brainstorm divergente</div>
+      </div>
+      <div class="card c2">
+        <h3>ChatGPT</h3>
+        <div class="verb">mapeamento de concorrentes</div>
+      </div>
+      <div class="card c3">
+        <h3>Gemini</h3>
+        <div class="verb">dados oficiais de saúde</div>
+      </div>
+    </div>
+    <div class="anchor">co-piloto, não autopiloto</div>
+  </section>
+
+  <!-- ======================= SLIDE 06 — O QUE FOI CONSTRUÍDO ======================= -->
+  <section class="slide s-built">
+    <h2 class="serif">O que foi construído em 5 dias</h2>
+    <div class="grid">
+      <div class="tile">
+        <span class="num">01</span>
+        <h3>Protótipo do app</h3>
+        <p>5 telas com features anotadas</p>
+        <code>prototipo/app.html</code>
+      </div>
+      <div class="tile">
+        <span class="num">02</span>
+        <h3>Landing de validação</h3>
+        <p>Convite para o Typeform</p>
+        <code>prototipo/index.html</code>
+      </div>
+      <div class="tile">
+        <span class="num">03</span>
+        <h3>Lean Canvas</h3>
+        <p>9 blocos do modelo de negócio</p>
+        <code>canvas/lean-canvas.html</code>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= SLIDE 07 — LEAN CANVAS ======================= -->
+  <section class="slide s-canvas">
+    <div class="hdr">
+      <h2>Lean Canvas — <span>CalmAI</span></h2>
+      <div class="meta"><strong>Diário emocional com IA</strong> · v1.1 (pós-experimento)</div>
+    </div>
+    <div class="canvas">
+
+      <div class="block b-problema">
+        <h3><span class="num">1</span> Problema</h3>
+        <ul>
+          <li>Jovens 18-30 sentem ansiedade mas não mapeiam padrões.</li>
+          <li>Apps de meditação genéricos não personalizam.</li>
+          <li>Terapia digital: R$30-200/mês, fora do orçamento.</li>
+        </ul>
+        <div class="highlight"><strong>Alternativas hoje:</strong> Notes do celular, desabafar com ChatGPT, abandonar
+          apps.</div>
+      </div>
+
+      <div class="block b-solucao">
+        <h3><span class="num">4</span> Solução</h3>
+        <ul>
+          <li>Diário híbrido (prompts + texto livre) com classificação emocional por IA.</li>
+          <li>Resumo semanal + reflexão acionável.</li>
+          <li>Linha do tempo emocional visual (4 semanas).</li>
+          <li>Privacidade radical (dados não treinam modelos).</li>
+        </ul>
+      </div>
+
+      <div class="block b-proposta">
+        <h3><span class="num">3</span> Proposta de Valor Única</h3>
+        <div class="highlight" style="font-style:normal; font-size:1.55vmin;">
+          <strong>"Entenda seu emocional como você entende sua agenda."</strong>
+        </div>
+        <p style="margin-top:1vmin;">
+          Diário com IA que escuta, identifica padrões e devolve clareza — em português, privado, por menos de
+          <strong>R$1/dia</strong>.
+        </p>
+        <div class="highlight" style="margin-top:auto;">
+          <strong>"ChatGPT esquece. CalmAI lembra e mostra o padrão."</strong>
+        </div>
+      </div>
+
+      <div class="block b-vantagem">
+        <h3><span class="num">9</span> Vantagem Injusta</h3>
+        <ul>
+          <li><strong>Memória longitudinal</strong>: ChatGPT esquece, CalmAI lembra.</li>
+          <li><strong>PT-BR nativo</strong>: tom calibrado culturalmente.</li>
+          <li><strong>Privacidade radical</strong> como diferencial ético.</li>
+        </ul>
+      </div>
+
+      <div class="block b-segmentos">
+        <h3><span class="num">2</span> Segmentos de Clientes</h3>
+        <ul>
+          <li><strong>Primário:</strong> 18-30 anos no Brasil, universitários/início de carreira, R$1.5k-5k/mês.</li>
+          <li><strong>Early adopters:</strong> quem abandonou apps de meditação ou usa ChatGPT pra desabafar.</li>
+        </ul>
+        <div class="highlight" style="margin-top:auto;">
+          <strong>Persona:</strong> Marina, 22, estagiária, R$2.5k/mês, ansiedade recorrente.
+        </div>
+      </div>
+
+      <div class="block b-metricas">
+        <h3><span class="num">8</span> Métricas-Chave</h3>
+        <ul>
+          <li><strong>Ativação:</strong> ≥ 3 entradas na 1ª semana.</li>
+          <li><strong>Retenção D30.</strong></li>
+          <li><strong>Conversão</strong> freemium → pago.</li>
+          <li><strong>NPS</strong> a cada 30 dias.</li>
+        </ul>
+      </div>
+
+      <div class="block b-canais">
+        <h3><span class="num">5</span> Canais</h3>
+        <ul>
+          <li>Instagram + TikTok (Reels sobre saúde mental).</li>
+          <li>Comunidades: WhatsApp/Discord universitários, r/Brasil.</li>
+          <li>Indicação ("1 amigo = 1 mês").</li>
+          <li>SEO: "como saber se tenho ansiedade".</li>
+        </ul>
+      </div>
+
+      <div class="block b-custos">
+        <h3><span class="num">7</span> Estrutura de Custos</h3>
+        <ul>
+          <li><strong>LLM:</strong> ~R$0,30 / usuário ativo / mês &nbsp;·&nbsp; <strong>Infra:</strong> ~R$0,50 /
+            usuário / mês</li>
+          <li><strong>Compliance LGPD:</strong> R$8k inicial + R$1,5k/mês &nbsp;·&nbsp; <strong>Marketing
+              orgânico:</strong> tempo do fundador</li>
+        </ul>
+      </div>
+
+      <div class="block b-receitas">
+        <h3><span class="num">6</span> Fontes de Receita</h3>
+        <ul>
+          <li><strong>Free</strong> ilimitado &nbsp;·&nbsp; <strong>Pro R$ 9,90/mês</strong> &nbsp;·&nbsp; <strong>Pro
+              Terapia R$ 19,90/mês</strong> (exporta histórico p/ terapeuta).</li>
+          <li><strong>B2B futuro:</strong> licenças para universidades, RHs e planos de saúde.</li>
+        </ul>
+        <div class="highlight" style="margin-top:auto;">
+          Margem-alvo: <strong>~70%</strong> no plano Pro mensal.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================= SLIDE 08 — AMOSTRA ======================= -->
+  <section class="slide s-sample">
+    <span class="eyebrow">Experimento</span>
+    <div class="big">5</div>
+    <div class="lbl serif">respostas reais · janela de 5 dias</div>
+    <div class="sub">100% na faixa-alvo de 18 a 30 anos</div>
+    <div class="caveat">amostra pequena. Suficiente pra decidir no pré-MVP.</div>
+  </section>
+
+  <!-- ======================= SLIDE 09 — 3 RESULTADOS ======================= -->
+  <section class="slide s-results">
+    <h2 class="serif">O que os dados disseram.</h2>
+    <div class="row">
+      <span class="icon ok">✓</span>
+      <span class="pct ok">100%</span>
+      <span class="desc">sentem ansiedade frequente<small>H1 — Problema · VALIDADO</small></span>
+    </div>
+    <div class="row">
+      <span class="icon ok">✓</span>
+      <span class="pct ok">60%</span>
+      <span class="desc">interesse alto após ver o protótipo<small>H2 — Solução · VALIDADO</small></span>
+    </div>
+    <div class="row">
+      <span class="icon fail">✕</span>
+      <span class="pct fail">0%</span>
+      <span class="desc">pagariam R$ 19,90 por mês<small>H3 — Preço · FALHOU</small></span>
+    </div>
+  </section>
+
+  <!-- ======================= SLIDE 10 — 80% CHATGPT ======================= -->
+  <section class="slide s-revelation">
+    <span class="eyebrow">A revelação do experimento</span>
+    <div class="big">80%</div>
+    <div class="lbl serif">usam ChatGPT pra desabafar.</div>
+    <div class="aside">O concorrente real é grátis. E já tá no celular deles.</div>
+  </section>
+
+  <!-- ======================= SLIDE 11 — FEATURE ERRADA ======================= -->
+  <section class="slide s-wrong">
+    <div class="grid">
+      <div class="col left">
+        <div class="lbl">Eu vendia</div>
+        <div class="what">IA que classifica emoções</div>
+        <div class="pct">20%</div>
+      </div>
+      <div class="col right">
+        <div class="lbl">Eles queriam</div>
+        <div class="what">o gráfico<br>do padrão emocional</div>
+        <div class="pct">80%</div>
+      </div>
+    </div>
+    <div class="closer serif italic">Eu estava vendendo a coisa errada.</div>
+  </section>
+
+  <!-- ======================= SLIDE 12 — DECISÃO ======================= -->
+  <section class="slide s-decision">
+    <h2><strong>Decisão:</strong> seguir, com ajustes agressivos.</h2>
+    <div class="changes">
+      <div class="change">
+        <span class="cat">Preço</span>
+        <span class="before">R$ 19,90 único</span>
+        <span class="arrow">→</span>
+        <span class="after">Free · R$ 9,90 · R$ 19,90 Pro Terapia</span>
+      </div>
+      <div class="change">
+        <span class="cat">Pitch</span>
+        <span class="before">"Diário com IA"</span>
+        <span class="arrow">→</span>
+        <span class="after">"Gráfico do seu emocional"</span>
+      </div>
+      <div class="change">
+        <span class="cat">Concorrente</span>
+        <span class="before">"Apps de meditação"</span>
+        <span class="arrow">→</span>
+        <span class="after">"ChatGPT esquece. CalmAI lembra."</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= SLIDE 13 — FECHAMENTO ======================= -->
+  <section class="slide s-close">
+    <div class="final serif">Falha validada vale mais que <strong>sucesso presumido.</strong></div>
+    <div class="divider"></div>
+    <div class="thanks">Obrigado!</div>
+    <div class="repo">
+      Código, dados e artefatos completos em:
+      <br><code>github.com/[SEU-USER]/trabalho-mev-validacao</code>
+    </div>
+  </section>
+
+  <!-- ======================= TOOLBAR ======================= -->
+  <div class="toolbar">
+    <span class="counter"><span id="cur">1</span><span class="sep"> / </span><span id="total">13</span></span>
+    <span class="sep">·</span>
+    <span class="hint">← →</span>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const curEl = document.getElementById('cur');
+    const totalEl = document.getElementById('total');
+    totalEl.textContent = slides.length;
+    let idx = 0;
+
+    function show(i) {
+      idx = Math.max(0, Math.min(slides.length - 1, i));
+      slides.forEach((s, k) => s.classList.toggle('active', k === idx));
+      curEl.textContent = idx + 1;
+      try { history.replaceState(null, '', '#' + (idx + 1)); } catch (e) { }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (['ArrowRight', ' ', 'PageDown', 'Enter'].includes(e.key)) { show(idx + 1); e.preventDefault(); }
+      else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { show(idx - 1); e.preventDefault(); }
+      else if (e.key === 'Home') show(0);
+      else if (e.key === 'End') show(slides.length - 1);
+      else if (e.key === 'f' || e.key === 'F') {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        else document.exitFullscreen();
+      }
+      else if (e.key === 'p' || e.key === 'P') window.print();
+    });
+
+    // Click to advance (right half = next, left half = previous)
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.toolbar')) return;
+      const half = window.innerWidth / 2;
+      show(e.clientX > half ? idx + 1 : idx - 1);
+    });
+
+    // Deep link by hash (#3 opens slide 3)
+    const hashN = parseInt(location.hash.replace('#', ''), 10);
+    if (!isNaN(hashN)) show(hashN - 1);
+  </script>
+
+</body>
+
+</html>

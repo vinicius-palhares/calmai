@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CalmAI — Protótipo do Produto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FBF8F4;
+    --bg-section: #F4EEE4;
+    --bg-soft: #F4EFE7;
+    --ink: #1F2233;
+    --ink-soft: #5C6378;
+    --ink-mute: #8C92A3;
+    --line: #E8E1D4;
+    --accent: #C4754E;
+    --accent-soft: #F2D9C8;
+    --accent-deep: #8E4F32;
+    --calm-1: #A8DDB5;
+    --calm-2: #C8E6FF;
+    --warn-1: #FFD89C;
+    --warn-2: #FFB199;
+    --purple: #D9C8F5;
+    --ann-line: #C4754E;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============================================================
+     HEADER
+  ============================================================ */
+  .hdr {
+    background:
+      radial-gradient(ellipse 1200px 600px at 30% 0%, var(--accent-soft) 0%, transparent 60%),
+      var(--bg);
+    padding: 56px 24px 48px;
+    text-align: center;
+  }
+  .hdr-inner { max-width: 900px; margin: 0 auto; }
+  .hdr .eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent-deep);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .hdr h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+  .hdr h1 em { font-style: italic; font-weight: 500; }
+  .hdr p {
+    color: var(--ink-soft);
+    font-size: 1rem;
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.55;
+  }
+  .hdr .back {
+    display: inline-block;
+    margin-top: 22px;
+    font-size: 13px;
+    color: var(--ink-mute);
+    text-decoration: none;
+  }
+  .hdr .back:hover { color: var(--accent); }
+
+  /* TOC nav under header */
+  .toc {
+    max-width: 1100px;
+    margin: 36px auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  .toc a {
+    padding: 8px 16px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: all .15s;
+  }
+  .toc a:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-1px); }
+  .toc a strong { color: var(--accent); margin-right: 6px; }
+
+  /* ============================================================
+     SCREEN SECTION
+  ============================================================ */
+  .section {
+    padding: 80px 24px 80px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section:nth-child(odd) { background: var(--bg); }
+  .section:nth-child(even) { background: var(--bg-section); }
+
+  .section-header {
+    max-width: 900px;
+    margin: 0 auto 56px;
+    text-align: center;
+  }
+  .section-header .num-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 6px;
+    letter-spacing: 0.16em;
+    margin-bottom: 14px;
+  }
+  .section-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+  .section-header p {
+    color: var(--ink-soft);
+    font-size: 15px;
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  /* Stage — 3 colunas: annotations | phone | annotations */
+  .stage {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) auto minmax(180px, 1fr);
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Coluna esquerda e direita = annotations stack */
+  .ann-col {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    padding: 24px 0;
+  }
+  .ann-col.left { align-items: stretch; padding-right: 0; }
+  .ann-col.right { align-items: stretch; padding-left: 0; }
+
+  /* Anotação individual */
+  .ann {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 36px;
+  }
+  .ann .ann-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+  .ann .ann-text small {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink-mute);
+    margin-top: 3px;
+  }
+  .ann .ann-line {
+    flex: 1;
+    height: 0;
+    border-top: 1.5px dashed var(--ann-line);
+    min-width: 40px;
+  }
+  .ann.right { flex-direction: row; }
+  .ann.right .ann-text { text-align: left; order: 2; }
+  .ann.right .ann-line { order: 1; }
+  .ann.left { flex-direction: row; }
+  .ann.left .ann-text { text-align: right; order: 0; }
+  .ann.left .ann-line { order: 1; }
+
+  /* Posicionamento vertical das anotações via flex gap + padding */
+  .ann-col.left .ann:nth-child(1) { margin-top: 30px; }
+  .ann-col.left .ann:nth-child(2) { margin-top: 80px; }
+  .ann-col.right .ann:nth-child(1) { margin-top: 60px; }
+  .ann-col.right .ann:nth-child(2) { margin-top: 80px; }
+
+  /* ============================================================
+     PHONE
+  ============================================================ */
+  .phone {
+    background: var(--ink);
+    border-radius: 36px;
+    padding: 11px 9px;
+    box-shadow: 0 30px 70px rgba(31,34,51,0.22);
+    width: 280px;
+    flex-shrink: 0;
+  }
+  .phone-notch {
+    width: 70px;
+    height: 18px;
+    background: var(--ink);
+    border-radius: 0 0 14px 14px;
+    margin: 0 auto 6px;
+    position: relative;
+    top: -11px;
+  }
+  .phone-screen {
+    background: var(--bg);
+    border-radius: 28px;
+    min-height: 540px;
+    padding: 20px 16px 64px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* status bar */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10.5px;
+    color: var(--ink);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .status-bar .icons { font-size: 11px; letter-spacing: 2px; }
+
+  /* tabs bottom */
+  .tabs {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    padding: 8px 12px 12px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 9px;
+    color: var(--ink-mute);
+  }
+  .tabs .tab { text-align: center; }
+  .tabs .tab .ico { font-size: 16px; display: block; margin-bottom: 2px; }
+  .tabs .tab.active { color: var(--accent); font-weight: 700; }
+
+  .btn-primary {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 12.5px;
+    cursor: pointer;
+  }
+
+  /* ===== Screen 01 — Onboarding ===== */
+  .onb-logo {
+    width: 60px;
+    height: 60px;
+    background: var(--accent);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: white;
+    margin: 36px auto 24px;
+    transform: rotate(12deg);
+  }
+  .onb h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.35rem;
+    text-align: center;
+    margin-bottom: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .onb p.sub {
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 22px;
+    padding: 0 6px;
+  }
+  .promise-list {
+    list-style: none;
+    display: grid;
+    gap: 10px;
+    margin-bottom: 28px;
+    padding: 0 4px;
+  }
+  .promise-list li {
+    font-size: 11px;
+    color: var(--ink);
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.4;
+  }
+  .promise-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--calm-1);
+    font-weight: bold;
+  }
+
+  /* ===== Screen 02 — Home ===== */
+  .home h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .home .date {
+    font-size: 10.5px;
+    color: var(--ink-mute);
+    margin-bottom: 18px;
+  }
+  .home .prompt-card {
+    background: linear-gradient(135deg, var(--accent-soft), #FFE4D1);
+    padding: 16px;
+    border-radius: 14px;
+    margin-bottom: 18px;
+  }
+  .home .prompt-card p {
+    font-family: 'Fraunces', serif;
+    font-size: 13.5px;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  .home .prompt-card button {
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 10.5px;
+    cursor: pointer;
+  }
+  .recent-label {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-mute);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .entry-mini {
+    background: var(--bg-soft);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+  .entry-mini .meta {
+    font-size: 9px;
+    color: var(--ink-mute);
+    margin-bottom: 4px;
+  }
+  .entry-mini .preview {
+    font-size: 10.5px;
+    color: var(--ink);
+    line-height: 1.35;
+    margin-bottom: 6px;
+  }
+  .entry-mini .tags { display: flex; gap: 4px; flex-wrap: wrap; }
+  .tag-mini {
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    font-weight: 500;
+  }
+  .tag-calma { background: var(--calm-1); color: #1f4d2a; }
+  .tag-alivio { background: var(--calm-2); color: #1c3a5e; }
+  .tag-ansiedade { background: var(--warn-2); color: #6b1f0f; }
+  .tag-cansaco { background: var(--warn-1); color: #6b3e0f; }
+
+  /* ===== Screen 03 — Nova entrada ===== */
+  .new .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .new .topbar h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  .new .topbar .x {
+    font-size: 18px;
+    color: var(--ink-mute);
+    cursor: pointer;
+  }
+  .prompt-opts {
+    font-size: 9.5px;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .prompt-chips {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .prompt-chip {
+    background: var(--bg-soft);
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 10.5px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all .2s;
+  }
+  .prompt-chip.selected {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+  .free-writing {
+    background: var(--bg-soft);
+    padding: 12px;
+    border-radius: 12px;
+    min-height: 130px;
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .free-writing .placeholder { color: var(--ink-mute); font-style: italic; }
+  .char-count { font-size: 9.5px; color: var(--ink-mute); text-align: right; margin-bottom: 14px; }
+
+  /* ===== Screen 04 — Insights ===== */
+  .insights .topbar { margin-bottom: 6px; }
+  .insights .topbar h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .insights .period {
+    font-size: 10.5px;
+    color: var(--ink-mute);
+    margin-bottom: 16px;
+  }
+  .chart {
+    background: var(--bg-soft);
+    border-radius: 14px;
+    padding: 14px 12px 10px;
+    margin-bottom: 14px;
+  }
+  .chart-label {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-mute);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .chart-bars {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    align-items: end;
+    height: 76px;
+  }
+  .bar { border-radius: 4px 4px 1px 1px; min-height: 4px; }
+  .chart-axis {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-top: 6px;
+    font-size: 9.5px;
+    color: var(--ink-mute);
+    text-align: center;
+  }
+  .insight-box {
+    background: linear-gradient(135deg, var(--accent-soft), #FFE4D1);
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+  .insight-box .lbl {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent-deep);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .insight-box p { font-size: 10.5px; line-height: 1.45; }
+  .tags-week {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .share-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    border-radius: 10px;
+    font-size: 10.5px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* ===== Screen 05 — Exportar terapeuta ===== */
+  .export .topbar h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+  }
+  .export .pro-badge {
+    display: inline-block;
+    background: var(--purple);
+    color: #4a2c8c;
+    font-size: 8.5px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .export .desc {
+    font-size: 11px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .period-opts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .period-opt {
+    padding: 9px 4px;
+    background: var(--bg-soft);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 10px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .period-opt.selected {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    font-weight: 700;
+    color: var(--accent-deep);
+  }
+  .field-label {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-mute);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .field-input {
+    background: var(--bg-soft);
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 10.5px;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .field-input .placeholder { color: var(--ink-mute); }
+  .privacy-note {
+    background: #E9F5EC;
+    padding: 9px 11px;
+    border-radius: 8px;
+    font-size: 10px;
+    line-height: 1.4;
+    color: #1f4d2a;
+    margin-bottom: 16px;
+  }
+  .privacy-note strong { display: block; margin-bottom: 2px; }
+
+  /* ============================================================
+     RESPONSIVO — colapsa anotações pra baixo do celular
+  ============================================================ */
+  @media (max-width: 960px) {
+    .stage {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      justify-items: center;
+    }
+    .ann-col {
+      flex-direction: column;
+      gap: 14px;
+      padding: 0 12px;
+      max-width: 460px;
+      width: 100%;
+    }
+    .ann-col.left .ann,
+    .ann-col.right .ann {
+      flex-direction: row;
+      align-items: flex-start;
+      margin-top: 0;
+      gap: 12px;
+    }
+    .ann-col.left .ann .ann-text,
+    .ann-col.right .ann .ann-text {
+      text-align: left;
+      order: 1;
+    }
+    .ann-col.left .ann .ann-line,
+    .ann-col.right .ann .ann-line {
+      order: 0;
+      flex: 0 0 14px;
+      min-width: 14px;
+      align-self: center;
+    }
+    /* Linha tracejada vira marcador horizontal pequeno */
+    .ann .ann-line { border-top: 1.5px dashed var(--ann-line); }
+    .phone { order: -1; }
+  }
+
+  /* ============================================================
+     FOOTER
+  ============================================================ */
+  .foot {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink-mute);
+    line-height: 1.6;
+  }
+  .foot strong { color: var(--ink); }
+  .foot em { font-style: italic; }
+  .foot code {
+    background: var(--bg-soft);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="hdr">
+  <div class="hdr-inner">
+    <span class="eyebrow">⌁ Protótipo do produto · entregável 2.2</span>
+    <h1>CalmAI — <em>5 telas principais do aplicativo</em></h1>
+    <p>Protótipo visual do <strong>produto CalmAI</strong> (não do site de marketing).
+    Cada seção abaixo destaca as <strong>features-chave</strong> de uma tela do fluxo principal,
+    com as decisões de design ancoradas no experimento de validação.</p>
+    <a href="index.html" class="back">← Voltar para a landing de validação</a>
+  </div>
+
+  <nav class="toc">
+    <a href="#screen-01"><strong>01</strong>Onboarding</a>
+    <a href="#screen-02"><strong>02</strong>Home</a>
+    <a href="#screen-03"><strong>03</strong>Nova entrada</a>
+    <a href="#screen-04"><strong>04</strong>Insights</a>
+    <a href="#screen-05"><strong>05</strong>Exportar terapeuta</a>
+  </nav>
+</header>
+
+<!-- ===================== SCREEN 01 — Onboarding ===================== -->
+<section class="section" id="screen-01">
+  <div class="section-header">
+    <span class="num-badge">01 · ONBOARDING</span>
+    <h2>Privacidade no primeiro toque</h2>
+    <p>O usuário com ansiedade não confia em qualquer app pra contar como se sente. A primeira tela <strong>já entrega 4 promessas explícitas</strong> antes de pedir qualquer coisa.</p>
+  </div>
+
+  <div class="stage">
+    <div class="ann-col left">
+      <div class="ann left">
+        <span class="ann-text">Logo da marca <small>identidade calma — laranja terracota + serif suave</small></span>
+        <span class="ann-line"></span>
+      </div>
+      <div class="ann left">
+        <span class="ann-text">Saudação acolhedora <small>tom humano, não corporativo</small></span>
+        <span class="ann-line"></span>
+      </div>
+    </div>
+
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen onb">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">▪▪▪ ⌂ 97%</span>
+        </div>
+        <div class="onb-logo">◐</div>
+        <h2>Olá.<br>Bem-vinda ao CalmAI.</h2>
+        <p class="sub">Seu espaço pra entender o que você sente — sem julgamento, sem propaganda, sem pressão.</p>
+        <ul class="promise-list">
+          <li>Seus textos nunca são vendidos</li>
+          <li>Seus dados não treinam IAs públicas</li>
+          <li>Você pode exportar e apagar tudo</li>
+          <li>Criptografia de ponta a ponta</li>
+        </ul>
+        <button class="btn-primary">Começar →</button>
+      </div>
+    </div>
+
+    <div class="ann-col right">
+      <div class="ann right">
+        <span class="ann-line"></span>
+        <span class="ann-text">4 promessas de privacidade <small>diferencial vs ChatGPT, validado nas respostas abertas</small></span>
+      </div>
+      <div class="ann right">
+        <span class="ann-line"></span>
+        <span class="ann-text">CTA único e claro <small>sem opções, sem cadastro nesta tela</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SCREEN 02 — Home ===================== -->
+<section class="section" id="screen-02">
+  <div class="section-header">
+    <span class="num-badge">02 · HOME / DASHBOARD</span>
+    <h2>Convite diário sem pressão</h2>
+    <p>Em vez de notificação push genérica ("não esqueça do diário!"), a tela inicial faz <strong>uma pergunta simples</strong> — e mostra que a IA já tagueou as últimas entradas.</p>
+  </div>
+
+  <div class="stage">
+    <div class="ann-col left">
+      <div class="ann left">
+        <span class="ann-text">Saudação personalizada <small>nome + data — o app lembra de você</small></span>
+        <span class="ann-line"></span>
+      </div>
+      <div class="ann left">
+        <span class="ann-text">Últimas entradas com preview <small>continuidade — diferencial vs ChatGPT que esquece</small></span>
+        <span class="ann-line"></span>
+      </div>
+    </div>
+
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen home">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">▪▪▪ ⌂ 97%</span>
+        </div>
+        <h2>Olá, Marina ☾</h2>
+        <div class="date">Quarta, 15 de abril</div>
+
+        <div class="prompt-card">
+          <p>Como você está<br>se sentindo agora?</p>
+          <button>+ Nova entrada</button>
+        </div>
+
+        <div class="recent-label">últimas entradas</div>
+
+        <div class="entry-mini">
+          <div class="meta">ontem · 22:14</div>
+          <div class="preview">"Acabei de sair da prova de cálculo. Achei que ia travar, mas consegui terminar..."</div>
+          <div class="tags">
+            <span class="tag-mini tag-calma">calma</span>
+            <span class="tag-mini tag-alivio">alívio</span>
+          </div>
+        </div>
+
+        <div class="entry-mini">
+          <div class="meta">segunda · 08:02</div>
+          <div class="preview">"Acordei com o coração acelerado de novo. Não sei o que é..."</div>
+          <div class="tags">
+            <span class="tag-mini tag-ansiedade">ansiedade</span>
+            <span class="tag-mini tag-cansaco">cansaço</span>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <div class="tab active"><span class="ico">◐</span>Home</div>
+          <div class="tab"><span class="ico">⌇</span>Insights</div>
+          <div class="tab"><span class="ico">⊙</span>Perfil</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ann-col right">
+      <div class="ann right">
+        <span class="ann-line"></span>
+        <span class="ann-text">Pergunta âncora do dia <small>convite leve, não tarefa</small></span>
+      </div>
+      <div class="ann right">
+        <span class="ann-line"></span>
+        <span class="ann-text">Tags emocionais auto-classificadas <small>IA roda em segundo plano sem fricção</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SCREEN 03 — Nova entrada ===================== -->
+<section class="section" id="screen-03">
+  <div class="section-header">
+    <span class="num-badge">03 · NOVA ENTRADA</span>
+    <h2>Híbrido: prompts guiados + escrita livre</h2>
+    <p>O experimento revelou: <strong>0% dos respondentes votou em "escrita livre" como atrativo</strong>. Tela em branco trava o usuário ansioso. Solução: começos sugeridos como ponto de partida — sem obrigar.</p>
+  </div>
+
+  <div class="stage">
+    <div class="ann-col left">
+      <div class="ann left">
+        <span class="ann-text">Prompts guiados leves <small>resolve o "trava na folha em branco" — insight do experimento</small></span>
+        <span class="ann-line"></span>
+      </div>
+      <div class="ann left">
+        <span class="ann-text">Opção "escrever livre" preservada <small>liberdade pra quem flui sem ajuda</small></span>
+        <span class="ann-line"></span>
+      </div>
+    </div>
+
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen new">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">▪▪▪ ⌂ 97%</span>
+        </div>
+        <div class="topbar">
+          <h2>Nova entrada</h2>
+          <span class="x">×</span>
+        </div>
+
+        <div class="prompt-opts">escolha um começo (opcional)</div>
+        <div class="prompt-chips">
+          <div class="prompt-chip">Hoje eu senti...</div>
+          <div class="prompt-chip selected">O que tá me deixando ansiosa é...</div>
+          <div class="prompt-chip">O que me pegou de surpresa foi...</div>
+          <div class="prompt-chip">Quero só escrever livre</div>
+        </div>
+
+        <div class="free-writing">
+          <span>O que tá me deixando ansiosa é essa sensação de que eu tô atrasada em tudo. Todo mundo parece ter um plano e eu fico</span>
+          <span class="placeholder">|</span>
+        </div>
+        <div class="char-count">142 caracteres</div>
+
+        <button class="btn-primary">Salvar entrada</button>
+      </div>
+    </div>
+
+    <div class="ann-col right">
+      <div class="ann right">
+        <span class="ann-line"></span>
+        <span class="ann-text">Área de escrita ampla <small>sem campos rígidos, sem limite imposto</small></span>
+      </div>
+      <div class="ann right">
+        <span class="ann-line"></span>
+        <span class="ann-text">Salvar com 1 toque <small>fricção mínima — rápido pra manter constância</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SCREEN 04 — Insights ===================== -->
+<section class="section" id="screen-04">
+  <div class="section-header">
+    <span class="num-badge">04 · INSIGHTS SEMANAIS</span>
+    <h2>A feature #1 validada nos dados reais</h2>
+    <p><strong>80% dos respondentes</strong> marcaram "ver meu padrão emocional num gráfico" como o atrativo principal — vs apenas 20% que valorizou "IA classificar emoções". Esta tela é o pitch do produto.</p>
+  </div>
+
+  <div class="stage">
+    <div class="ann-col left">
+      <div class="ann left">
+        <span class="ann-text">Gráfico semanal de emoções <small>★ feature âncora — 80% dos respondentes votaram nela</small></span>
+        <span class="ann-line"></span>
+      </div>
+      <div class="ann left">
+        <span class="ann-text">Tags ranqueadas da semana <small>resumo visual rápido</small></span>
+        <span class="ann-line"></span>
+      </div>
+    </div>
+
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen insights">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">▪▪▪ ⌂ 97%</span>
+        </div>
+        <div class="topbar">
+          <h2>Sua semana</h2>
+        </div>
+        <div class="period">9 a 15 de abril</div>
+
+        <div class="chart">
+          <div class="chart-label">emoção predominante por dia</div>
+          <div class="chart-bars">
+            <span class="bar" style="height:30%; background:var(--warn-2)"></span>
+            <span class="bar" style="height:55%; background:var(--warn-2)"></span>
+            <span class="bar" style="height:70%; background:var(--warn-2)"></span>
+            <span class="bar" style="height:45%; background:var(--warn-1)"></span>
+            <span class="bar" style="height:35%; background:var(--calm-1)"></span>
+            <span class="bar" style="height:25%; background:var(--calm-1)"></span>
+            <span class="bar" style="height:20%; background:var(--calm-1)"></span>
+          </div>
+          <div class="chart-axis">
+            <span>qua</span><span>qui</span><span>sex</span><span>sáb</span><span>dom</span><span>seg</span><span>ter</span>
+          </div>
+        </div>
+
+        <div class="insight-box">
+          <div class="lbl">⌃ insight da semana</div>
+          <p>Sua ansiedade apareceu principalmente <strong>nas manhãs de sex-feira</strong> e antes de provas. Os finais de semana te acalmaram.</p>
+        </div>
+
+        <div class="tags-week">
+          <span class="tag-mini tag-ansiedade">ansiedade (4)</span>
+          <span class="tag-mini tag-calma">calma (3)</span>
+          <span class="tag-mini tag-cansaco">cansaço (2)</span>
+        </div>
+
+        <button class="share-btn">
+          <span>Compartilhar com terapeuta</span>
+          <span>→</span>
+        </button>
+
+        <div class="tabs">
+          <div class="tab"><span class="ico">◐</span>Home</div>
+          <div class="tab active"><span class="ico">⌇</span>Insights</div>
+          <div class="tab"><span class="ico">⊙</span>Perfil</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ann-col right">
+      <div class="ann right">
+        <span class="ann-line"></span>
+        <span class="ann-text">Insight em linguagem natural <small>"sex-feira de manhã" — a IA explica o padrão</small></span>
+      </div>
+      <div class="ann right">
+        <span class="ann-line"></span>
+        <span class="ann-text">Compartilhar com terapeuta <small>ponte para a tela 05 (feature Pro Terapia)</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SCREEN 05 — Exportar ===================== -->
+<section class="section" id="screen-05">
+  <div class="section-header">
+    <span class="num-badge">05 · EXPORTAR PRA TERAPEUTA</span>
+    <h2>A feature que surgiu do experimento</h2>
+    <p>Uma respondente em terapia (25-30) disse: <em>"entre as sessões perco o fio, queria registrar pra não chegar sem lembrar dos episódios"</em>. Esta feature foi promovida de "Could have" para <strong>âncora do plano Pro Terapia (R$19,90)</strong>.</p>
+  </div>
+
+  <div class="stage">
+    <div class="ann-col left">
+      <div class="ann left">
+        <span class="ann-text">Badge Pro <small>segmentação de plano explícita</small></span>
+        <span class="ann-line"></span>
+      </div>
+      <div class="ann left">
+        <span class="ann-text">Seletor de período <small>7 / 30 / 90 dias — alinha com cadência de sessões</small></span>
+        <span class="ann-line"></span>
+      </div>
+    </div>
+
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen export">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">▪▪▪ ⌂ 97%</span>
+        </div>
+        <div class="topbar">
+          <h2>Exportar<span class="pro-badge">Pro</span></h2>
+          <span class="x">×</span>
+        </div>
+
+        <p class="desc">Gere um resumo em PDF das suas entradas para levar pra sessão de terapia. <strong>Sem precisar lembrar de tudo.</strong></p>
+
+        <div class="field-label">período</div>
+        <div class="period-opts">
+          <div class="period-opt">7 dias</div>
+          <div class="period-opt selected">30 dias</div>
+          <div class="period-opt">90 dias</div>
+        </div>
+
+        <div class="field-label">enviar para</div>
+        <div class="field-input">
+          <span class="placeholder">dra.ana@clinica.com.br</span>
+        </div>
+
+        <div class="privacy-note">
+          <strong>✓ privacidade garantida</strong>
+          O arquivo vai só pro e-mail que você escolher. Nada fica no nosso servidor.
+        </div>
+
+        <button class="btn-primary">Gerar PDF e enviar →</button>
+      </div>
+    </div>
+
+    <div class="ann-col right">
+      <div class="ann right">
+        <span class="ann-line"></span>
+        <span class="ann-text">Envio direto pro e-mail do terapeuta <small>sem plataforma intermediária</small></span>
+      </div>
+      <div class="ann right">
+        <span class="ann-line"></span>
+        <span class="ann-text">Promessa de privacidade reforçada <small>"nada fica no nosso servidor" — argumento de venda Pro</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<div class="foot">
+  <strong>Sobre este protótipo:</strong> as 5 telas representam o <em>fluxo central</em>
+  do aplicativo CalmAI. Protótipo visual sem código funcional — fidelidade alta, navegação simulada.<br><br>
+  Decisões de design ancoradas no experimento: <em>prompts guiados</em> (tela 03),
+  <em>gráfico como feature âncora</em> (tela 04) e <em>exportação pro terapeuta</em> (tela 05).<br><br>
+  <code>prototipo/app.html</code> · Trabalho UniFECAF · Metodologias Ágeis e Validação de Produtos
+</div>
+
+</body>
+</html>

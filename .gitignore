@@ -1,0 +1,36 @@
+# ============================================================
+# CalmAI — trabalho UniFECAF
+# ============================================================
+
+# Sistema Operacional
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editores / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# Claude Code (config local, caso venha a existir nesta pasta)
+.claude/
+
+# Node (caso futuramente haja tooling)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs gerais
+*.log
+
+# Roteiro do vídeo pitch — uso pessoal, não vai para o repositório
+docs/04-roteiro-video-pitch.md
